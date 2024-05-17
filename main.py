@@ -5,6 +5,8 @@ from rembg import remove
 from PIL import Image
 from io import BytesIO
 import tempfile
+import uvicorn
+
 
 app = FastAPI()
 
@@ -34,3 +36,6 @@ async def upload_file(request: Request, file: UploadFile = File(...)):
         temp_file_path = temp_file.name
     
     return FileResponse(temp_file_path, media_type='image/png', filename='_rmbg.png')
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 8000)))
