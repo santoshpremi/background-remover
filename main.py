@@ -6,6 +6,7 @@ from PIL import Image
 from io import BytesIO
 import tempfile
 import uvicorn
+import os
 
 
 app = FastAPI()
