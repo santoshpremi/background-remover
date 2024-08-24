@@ -4,12 +4,12 @@ from fastapi.responses import FileResponse
 from rembg import remove
 from PIL import Image
 from io import BytesIO
-import os
+import tempfile
+
 
 app = FastAPI()
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
-
 @app.get("/")
 async def index():
     return FileResponse("static/html/index.html")
@@ -26,27 +26,13 @@ async def script():
 async def upload_file(request: Request, file: UploadFile = File(...)):
     if not file:
         return 'No file uploaded', 400
-    
-    # Initialize a temporary file for saving the downloaded image
-    temp_file_path = 'temp.png'
 
-    # Stream the download of the image file and save it to the temporary file
-    with open(temp_file_path, 'wb') as f:
-        while content := await file.read(1024):  # Stream the content in chunks
-            f.write(content)
-
-    # Open the downloaded image using PIL
-    input_image = Image.open(temp_file_path)
-
-    # Process the image using rembg
+    input_image = Image.open(BytesIO(await file.read()))
     output_image = remove(input_image, post_process_mask=True)
 
-    # Save the processed image to a temporary file
-    output_temp_file_path = 'temp_output.png'
-    output_image.save(output_temp_file_path, 'PNG')
+    with tempfile.NamedTemporaryFile(delete=False, suffix='.png') as temp_file:
+        output_image.save(temp_file, 'PNG')
+        temp_file_path = temp_file.name
+    
+    return FileResponse(temp_file_path, media_type='image/png', filename='_rmbg.png')
 
-    # Close and remove the temporary file for the input image
-    os.remove(temp_file_path)
-
-    # Return the processed image as a FileResponse
-    return FileResponse(output_temp_file_path, media_type='image/png', filename='_rmbg.png')
