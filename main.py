@@ -1,7 +1,7 @@
 from fastapi import FastAPI, UploadFile, File, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
-from rembg import remove
+import engine
 from PIL import Image
 from io import BytesIO
 import tempfile
@@ -28,7 +28,7 @@ async def upload_file(request: Request, file: UploadFile = File(...)):
         return 'No file uploaded', 400
 
     input_image = Image.open(BytesIO(await file.read()))
-    output_image = remove(input_image, post_process_mask=True)
+    output_image = engine.remove_bg(input_image)
 
     with tempfile.NamedTemporaryFile(delete=False, suffix='.png') as temp_file:
         output_image.save(temp_file, 'PNG')
