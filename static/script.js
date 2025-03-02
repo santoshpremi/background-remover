@@ -50,7 +50,7 @@ elements.processBtn.addEventListener('click', async () => {
           const url = URL.createObjectURL(blob);
           const a = document.createElement("a");
           a.href = url;
-          a.download = "processed.png";
+          a.download = "bg_remove.png";
           document.body.appendChild(a);
           a.click();
           URL.revokeObjectURL(url);
