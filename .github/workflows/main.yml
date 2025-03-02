@@ -36,13 +36,14 @@ jobs:
     needs: build-and-push
     runs-on: ubuntu-latest
 
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Decode and save AWS private key
+      - name: Save AWS private key
         run: |
-          echo "${{ secrets.AWS_PRIVATE_KEY }}" | base64 --decode > aws_key.pem
+          echo "${{ secrets.AWS_PRIVATE_KEY }}" > aws_key.pem
           chmod 600 aws_key.pem
 
       - name: Connect to AWS EC2 and Deploy
@@ -50,12 +51,9 @@ jobs:
         with:
           host: ${{ secrets.AWS_HOST }}
           username: ${{ secrets.AWS_USER }}
-          key: ${{ secrets.AWS_PRIVATE_KEY }}
+          key: ./aws_key.pem  # Use the saved key file
           script: |
-            # Pull the latest multi-platform image
             docker pull santoshpremi/bg-remover-01:latest
-            # Stop and remove the old container (if running)
             docker stop stoic_pare || true
             docker rm stoic_pare || true
-            # Run the new container
             docker run -d --name stoic_pare -p 80:80 santoshpremi/bg-remover-01:latest
