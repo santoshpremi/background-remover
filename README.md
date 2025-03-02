@@ -1,5 +1,4 @@
 # Background Remover
-## About
 This project is a web-based background remover tool that uses AI to automatically remove backgrounds from images. <br/>It is built using Python and FastAPI.
 
 
