@@ -12,15 +12,15 @@ app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 @app.get("/")
 async def index():
-    return FileResponse("static/html/index.html")
+    return FileResponse("static/index.html")
 
 @app.get("/styles.css")
 async def styles():
-    return FileResponse("static/css/styles.css")
+    return FileResponse("static/styles.css")
 
 @app.get("/script.js")
 async def script():
-    return FileResponse("static/js/script.js")
+    return FileResponse("static/script.js")
 
 @app.post("/")
 async def upload_file(request: Request, file: UploadFile = File(...)):

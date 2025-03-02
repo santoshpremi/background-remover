@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Free AI-powered background remover tool - instantly remove image backgrounds online.
+        Create transparent PNGs with no watermarks, no sign-up required."
+    />
+    <meta
+      name="keywords"
+      content="background remover, image background removal, 
+        free online tool, AI background removal, transparent background,
+        remove background from photo, background eraser, background removal tool,
+        online image editor, remove image background"
+    />
+    <title>Background Remover | Free Online Tool</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <div class="tool-container">
+        <div class="upload-section">
+          <div class="upload-header">
+            <h1>Remove Background</h1>
+            <p>Drag & drop image or click to upload</p>
+          </div>
+
+          <div class="preview-area">
+            <div class="preview-container">
+              <img
+                id="previewImage"
+                class="preview-image"
+                alt="Image preview"
+              />
+              <div class="placeholder">
+                <i class="fas fa-image"></i>
+                <p>Your image will appear here</p>
+              </div>
+            </div>
+          </div>
+
+          <form
+            id="uploadForm"
+            action="/"
+            method="POST"
+            enctype="multipart/form-data"
+            class="controls"
+          >
+            <label class="file-input">
+              <input type="file" id="fileInput" accept="image/*" />
+              <span class="btn primary">
+                <i class="fas fa-folder-open"></i> Choose File
+              </span>
+            </label>
+            <button
+              type="button"
+              id="processBtn"
+              type="submit"
+              class="btn success"
+            >
+              <i class="fas fa-download"></i> Download Image
+            </button>
+          </form>
+          <div class="file-info">
+            <span id="fileName">No file selected</span>
+            <span id="fileSize"></span>
+          </div>
+
+          <div class="progress-container">
+            <div class="progress-bar">
+              <div class="progress-fill"></div>
+            </div>
+            <span class="progress-text"
+              >Processing: <span id="progressValue">0</span>%</span
+            >
+          </div>
+        </div>
+
+        <div class="features">
+          <div class="feature-card">
+            <i class="fas fa-clock"></i>
+            <h3>Fast Processing</h3>
+            <p>Get results in seconds with AI-powered technology</p>
+          </div>
+          <div class="feature-card">
+            <i class="fas fa-shield-alt"></i>
+            <h3>Secure & Private</h3>
+            <p>Files automatically deleted after processing</p>
+          </div>
+          <div class="feature-card">
+            <i class="fas fa-heart"></i>
+            <h3>Free to Use</h3>
+            <p>100% free with no watermarks or signups</p>
+          </div>
+        </div>
+        <!-- Developer Credits -->
+        <div class="developer-credits">
+          <p>
+            Developed by Santosh Premi Adhikari
+            <a
+              href="https://github.com/santoshpremi/background-remover"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="dev-link"
+            >
+              <i class="fab fa-github"></i> GitHub
+            </a>
+            <a
+              href="https://www.linkedin.com/in/santosh-premi-adhikari-2407a6209/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="dev-link"
+            >
+              <i class="fab fa-linkedin"></i> LinkedIn
+            </a>
+          </p>
+        </div>
+      </div>
+
+      <div id="messageBox" class="message-box">
+        <div class="message-content">
+          <span id="closeMessage" class="close-btn">&times;</span>
+          <h3 id="messageTitle"></h3>
+          <p id="messageText"></p>
+        </div>
+      </div>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>

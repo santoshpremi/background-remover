@@ -4,8 +4,8 @@ import torch
 from torchvision import transforms
 import utils, model
 
-model_path = './u2net.pth'
-model_pred = model.U2NET(3, 1)
+model_path = './u2netp.pth'
+model_pred = model.U2NETP(3, 1)
 model_pred.load_state_dict(torch.load(model_path, map_location="cpu"))
 model_pred.eval()
 

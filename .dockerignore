@@ -1,0 +1,58 @@
+# Include any files or directories that you don't want to be copied to your
+# container here (e.g., local build artifacts, temporary files, etc.).
+#
+# For more help, visit the .dockerignore file reference guide at
+# https://docs.docker.com/go/build-context-dockerignore/
+
+**/.DS_Store
+**/.vs
+**/.vscode
+**/.idea
+
+# Python-specific
+**/__pycache__
+**/*.py[cod]
+**/.venv
+**/venv
+**/env
+**/Pipfile*
+**/poetry.lock
+
+# Build/test artifacts
+**/build
+**/dist
+**/*.egg-info
+**/.pytest_cache
+**/coverage.xml
+**/*.log
+
+# Docker/CI
+**/Dockerfile*
+**/docker-compose*
+**/compose.y*ml
+**/.dockerignore
+
+# Git
+**/.git
+**/.gitignore
+**/.gitmodules
+
+# Node.js (if your project has frontend files)
+**/node_modules
+**/npm-debug.log
+
+# Local secrets/configs
+**/.env
+**/secrets.dev.yaml
+**/config.local.yaml
+
+# Documentation (exclude unless needed in the image)
+README.md
+LICENSE
+CHANGELOG.md
+
+# Application-specific large files (adjust as needed)
+**/tests
+**/samples
+**/data/raw  # Example: exclude raw datasets
+**/*.ipynb
