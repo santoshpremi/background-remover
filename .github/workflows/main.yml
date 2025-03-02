@@ -29,7 +29,6 @@ jobs:
         run: |
           # Create and use a new builder with multi-platform support
           docker buildx create --use --platform linux/amd64,linux/arm64
-
           # Build and push the image for both amd64 and arm64 architectures
           docker buildx build --platform linux/amd64,linux/arm64 -t santoshpremi/bg-remover-01:latest --push .
 
@@ -38,6 +37,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Decode and save AWS private key
+        run: |
+          echo "${{ secrets.AWS_PRIVATE_KEY }}" | base64 --decode > aws_key.pem
+          chmod 600 aws_key.pem
+
       - name: Connect to AWS EC2 and Deploy
         uses: appleboy/ssh-action@v0.1.7
         with:
@@ -47,10 +54,8 @@ jobs:
           script: |
             # Pull the latest multi-platform image
             docker pull santoshpremi/bg-remover-01:latest
-
             # Stop and remove the old container (if running)
             docker stop stoic_pare || true
             docker rm stoic_pare || true
-
             # Run the new container
             docker run -d --name stoic_pare -p 80:80 santoshpremi/bg-remover-01:latest
