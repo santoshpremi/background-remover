@@ -3,7 +3,7 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - main  # Change if using a different branch
+      - main  # Trigger this on main branch
 
 jobs:
   build-and-push:
@@ -13,6 +13,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Set up QEMU for multi-platform builds
+        uses: docker/setup-qemu-action@v2
+
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
@@ -21,8 +27,12 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker buildx build --platform linux/amd64,linux/arm64 -t santoshpremi/bg-remover-01:latest .
-          docker push santoshpremi/bg-remover-01:latest
+          # Create and use a new builder with multi-platform support
+          docker buildx create --use --platform linux/amd64,linux/arm64
+
+          # Build and push the image for both amd64 and arm64 architectures
+          docker buildx build --platform linux/amd64,linux/arm64 -t santoshpremi/bg-remover-01:latest --push .
+
   deploy:
     needs: build-and-push
     runs-on: ubuntu-latest
@@ -35,7 +45,12 @@ jobs:
           username: ${{ secrets.AWS_USER }}
           key: ${{ secrets.AWS_PRIVATE_KEY }}
           script: |
+            # Pull the latest multi-platform image
             docker pull santoshpremi/bg-remover-01:latest
+
+            # Stop and remove the old container (if running)
             docker stop stoic_pare || true
             docker rm stoic_pare || true
+
+            # Run the new container
             docker run -d --name stoic_pare -p 80:80 santoshpremi/bg-remover-01:latest
