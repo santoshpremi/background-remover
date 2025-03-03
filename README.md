@@ -1,6 +1,11 @@
 # Background Remover
+
+
 This project is a web-based background remover tool that uses AI to automatically remove backgrounds from images. <br/>It is built using Python and FastAPI.
 
+<p align="center">
+  <img width="400" height="400" src="https://i.imghippo.com/files/Are1318gcQ.png">
+</p>
 
 ## U2NET Small Model
 Description: U2NET small is a lightweight version of the U2NET model, optimized for real-time background removal.
