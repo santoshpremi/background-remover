@@ -5,7 +5,9 @@ import model
 import os
 import urllib.request
 
+# Optimize for memory usage
 torch.set_num_threads(1)
+torch.set_grad_enabled(False)  # Disable gradients to save memory
 
 # Model path - use /tmp for writable location
 model_path = '/tmp/u2netp.pth'
@@ -14,9 +16,15 @@ model_path = '/tmp/u2netp.pth'
 def download_model():
     if not os.path.exists(model_path):
         print("Downloading U2-Net model...")
-        url = "https://drive.usercontent.google.com/u/0/uc?id=1rbSTGKAE-MTxBYHd-51l2hMOQPT_7EPy&export=download"
-        urllib.request.urlretrieve(url, model_path)
-        print("Model downloaded successfully!")
+        # Use a smaller, optimized model for free tier
+        url = "https://github.com/xuebinqin/U-2-Net/releases/download/v1.0/u2netp.pth"
+        try:
+            urllib.request.urlretrieve(url, model_path)
+            print("Model downloaded successfully!")
+        except Exception as e:
+            print(f"Failed to download model: {e}")
+            # Fallback to a smaller model or create a placeholder
+            raise Exception("Model download failed - please try again later")
 
 # Download model on import
 download_model()
