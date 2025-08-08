@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-ARG PYTHON_VERSION=3.12.1
+ARG PYTHON_VERSION=3.11.9
 
 FROM python:${PYTHON_VERSION}-slim as base
 
@@ -22,7 +22,7 @@ RUN useradd -ms /bin/bash appuser
 
 RUN --mount=type=cache,target=/root/.cache/pip \
     --mount=type=bind,source=requirements.txt,target=requirements.txt \
-    python -m pip install -r requirements.txt
+    python -m pip install --no-cache-dir -r requirements.txt
 
 
 # Switch to the non-privileged 'appuser'.
@@ -34,8 +34,15 @@ COPY . .
 # Expose the port that the application listens on.
 EXPOSE 8000
 
-# Run the application.
-CMD uvicorn main:app --reload --port 8000 --host 0.0.0.0
+# Set default port for Render
+ENV PORT=8000
+
+# Run the application. Use a single worker to avoid duplicating model RAM.
+ENV OMP_NUM_THREADS=1
+ENV MKL_NUM_THREADS=1
+ENV NUMEXPR_NUM_THREADS=1
+ENV UVICORN_WORKERS=1
+CMD uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000} --workers ${UVICORN_WORKERS}
 
 
 

@@ -3,48 +3,151 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Primary Meta Tags -->
+    <title>
+      Free Background Remover - Remove Image Background Online | No Signup
+      Required
+    </title>
+    <meta
+      name="title"
+      content="Free Background Remover - Remove Image Background Online | No Signup Required"
+    />
     <meta
       name="description"
-      content="Free AI-powered background remover tool - instantly remove image backgrounds online.
-        Create transparent PNGs with no watermarks, no sign-up required."
+      content="Remove image backgrounds instantly with AI. Free online background remover tool - no signup, no watermarks. Create transparent PNGs in seconds. Try it now!"
     />
     <meta
       name="keywords"
-      content="background remover, image background removal, 
-        free online tool, AI background removal, transparent background,
-        remove background from photo, background eraser, background removal tool,
-        online image editor, remove image background"
+      content="background remover, remove background, free background remover, AI background removal, transparent background, remove bg, image background removal, online background remover, free image editor, remove background from photo, background eraser, remove image background, HD background removal, professional background remover, instant background removal"
     />
-    <title>Background Remover | Free Online Tool</title>
+    <meta name="author" content="Background Remover Tool" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="English" />
+    <meta name="revisit-after" content="7 days" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://bg-remove.org/" />
+    <meta
+      property="og:title"
+      content="Free Background Remover - Remove Image Background Online"
+    />
+    <meta
+      property="og:description"
+      content="Remove image backgrounds instantly with AI. Free online background remover tool - no signup, no watermarks. Create transparent PNGs in seconds."
+    />
+    <meta
+      property="og:image"
+      content="https://bg-remove.org/static/og-image.jpg"
+    />
+    <meta property="og:site_name" content="Background Remover" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://bg-remove.org/" />
+    <meta
+      property="twitter:title"
+      content="Free Background Remover - Remove Image Background Online"
+    />
+    <meta
+      property="twitter:description"
+      content="Remove image backgrounds instantly with AI. Free online background remover tool - no signup, no watermarks."
+    />
+    <meta
+      property="twitter:image"
+      content="https://bg-remove.org/static/og-image.jpg"
+    />
+
+    <!-- Additional SEO Meta Tags -->
+    <meta name="application-name" content="Background Remover" />
+    <meta name="msapplication-TileColor" content="#4a90e2" />
+    <meta name="theme-color" content="#4a90e2" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Background Remover" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://bg-remove.org/" />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Background Remover",
+        "description": "Free AI-powered background remover tool that instantly removes image backgrounds online",
+        "url": "https://bg-remove.org/",
+        "applicationCategory": "Image Editor",
+        "operatingSystem": "Web Browser",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "featureList": [
+          "Instant background removal",
+          "AI-powered technology",
+          "No signup required",
+          "Free to use",
+          "Transparent PNG export",
+          "Multiple format support"
+        ],
+        "author": {
+          "@type": "Person",
+          "name": "Santosh Premi Adhikari"
+        }
+      }
+    </script>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
     />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="/static/styles.css" />
   </head>
   <body>
     <main class="container">
       <div class="tool-container">
         <div class="upload-section">
           <div class="upload-header">
-            <h1>Remove Background</h1>
-            <p>Drag & drop image or click to upload</p>
+            <h1>Free Background Remover</h1>
           </div>
 
-          <div class="preview-area">
-            <div class="preview-container">
-              <img
-                id="previewImage"
-                class="preview-image"
-                alt="Image preview"
-              />
-              <div class="placeholder">
-                <i class="fas fa-image"></i>
-                <p>Your image will appear here</p>
+          <div class="preview-grid">
+            <div class="panel">
+              <h3><i class="fas fa-image"></i> Original</h3>
+              <div class="preview-container" id="dropZone">
+                <img
+                  id="previewImage"
+                  class="preview-image"
+                  alt="Original preview"
+                />
+                <div class="placeholder">
+                  <i class="fas fa-image"></i>
+                  <p>Your image will appear here</p>
+                </div>
+              </div>
+            </div>
+            <div class="panel">
+              <h3><i class="fas fa-magic"></i> Result</h3>
+              <div class="preview-container">
+                <img
+                  id="resultImage"
+                  class="preview-image"
+                  alt="Result preview"
+                />
+                <div class="placeholder" id="resultPlaceholder">
+                  <i class="fas fa-wand-magic-sparkles"></i>
+                  <p>Process to see the result</p>
+                </div>
               </div>
             </div>
           </div>
 
+          <div class="file-info">
+            <span id="fileName">No file selected</span>
+            <span id="fileSize"></span>
+          </div>
           <form
             id="uploadForm"
             action="/"
@@ -58,48 +161,58 @@
                 <i class="fas fa-folder-open"></i> Choose File
               </span>
             </label>
-            <button
-              type="button"
-              id="processBtn"
-              type="submit"
-              class="btn success"
-            >
-              <i class="fas fa-download"></i> Download Image
-            </button>
+            <div class="export-controls">
+              <label>
+                Format
+                <select id="formatSelect">
+                  <option value="png" selected>PNG</option>
+                  <option value="jpeg">JPEG</option>
+                </select>
+              </label>
+              <label id="bgColorLabel">
+                Background
+                <input type="color" id="bgColor" value="#ffffff" />
+              </label>
+              <button
+                type="button"
+                id="downloadBtn"
+                class="btn primary"
+                disabled
+              >
+                <i class="fas fa-download"></i> Download
+              </button>
+            </div>
           </form>
-          <div class="file-info">
-            <span id="fileName">No file selected</span>
-            <span id="fileSize"></span>
-          </div>
 
-          <div class="progress-container">
+          <div class="progress-container" id="progressContainer">
             <div class="progress-bar">
               <div class="progress-fill"></div>
             </div>
-            <span class="progress-text"
-              >Processing: <span id="progressValue">0</span>%</span
-            >
+            <span class="progress-text">Processing…</span>
           </div>
         </div>
 
         <div class="features">
           <div class="feature-card">
             <i class="fas fa-clock"></i>
-            <h3>Fast Processing</h3>
-            <p>Get results in seconds with AI-powered technology</p>
+            <h3>Instant Background Removal</h3>
+            <p>Remove backgrounds in seconds with advanced AI technology</p>
           </div>
           <div class="feature-card">
             <i class="fas fa-shield-alt"></i>
-            <h3>Secure & Private</h3>
-            <p>Files automatically deleted after processing</p>
+            <h3>100% Free & Secure</h3>
+            <p>No signup required, files deleted after processing</p>
           </div>
           <div class="feature-card">
-            <i class="fas fa-heart"></i>
-            <h3>Free to Use</h3>
-            <p>100% free with no watermarks or signups</p>
+            <i class="fas fa-download"></i>
+            <h3>Multiple Formats</h3>
+            <p>
+              Download as PNG with transparency or JPEG with custom background
+            </p>
           </div>
         </div>
-        <!-- Developer Credits -->
+
+        <!-- Developer Links -->
         <div class="developer-credits">
           <p>
             Developed by Santosh Premi Adhikari
@@ -131,6 +244,7 @@
         </div>
       </div>
     </main>
-    <script src="script.js"></script>
+    <canvas id="workCanvas" style="display: none"></canvas>
+    <script src="/static/script.js"></script>
   </body>
 </html>

@@ -3,7 +3,7 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - main  # Trigger this on main branch
+      - main # Trigger this on main branch
 
 jobs:
   build-and-push:
@@ -36,7 +36,6 @@ jobs:
     needs: build-and-push
     runs-on: ubuntu-latest
 
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -51,7 +50,7 @@ jobs:
         with:
           host: ${{ secrets.AWS_HOST }}
           username: ${{ secrets.AWS_USER }}
-          key: ./aws_key.pem  # Use the saved key file
+          key: ./aws_key.pem # Use the saved key file
           script: |
             docker pull santoshpremi/bg-remover-01:latest
             docker stop stoic_pare || true

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://bg-remove.org/sitemap.xml 
