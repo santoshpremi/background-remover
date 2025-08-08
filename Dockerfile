@@ -2,7 +2,7 @@
 
 ARG PYTHON_VERSION=3.11.9
 
-FROM python:${PYTHON_VERSION}-slim as base
+FROM python:${PYTHON_VERSION}-slim AS base
 
 # Prevents Python from writing pyc files.
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -42,7 +42,7 @@ ENV OMP_NUM_THREADS=1
 ENV MKL_NUM_THREADS=1
 ENV NUMEXPR_NUM_THREADS=1
 ENV UVICORN_WORKERS=1
-CMD uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000} --workers ${UVICORN_WORKERS}
+CMD uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000} --workers 1
 
 
 
