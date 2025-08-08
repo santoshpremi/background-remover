@@ -7,8 +7,8 @@ import urllib.request
 
 torch.set_num_threads(1)
 
-# Model path
-model_path = './u2netp.pth'
+# Model path - use /tmp for writable location
+model_path = '/tmp/u2netp.pth'
 
 # Download model if it doesn't exist
 def download_model():

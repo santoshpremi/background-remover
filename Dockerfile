@@ -25,11 +25,14 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     python -m pip install --no-cache-dir -r requirements.txt
 
 
-# Switch to the non-privileged 'appuser'.
-USER appuser
-
 # Copy the source code into the container.
 COPY . .
+
+# Ensure /tmp is writable by appuser
+RUN chmod 755 /tmp
+
+# Switch to the non-privileged 'appuser'.
+USER appuser
 
 # Expose the port that the application listens on.
 EXPOSE 8000
