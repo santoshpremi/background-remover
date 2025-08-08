@@ -16,8 +16,8 @@ model_path = '/tmp/u2netp.pth'
 def download_model():
     if not os.path.exists(model_path):
         print("Downloading U2-Net model...")
-        # Use a smaller, optimized model for free tier
-        url = "https://github.com/xuebinqin/U-2-Net/releases/download/v1.0/u2netp.pth"
+        # Use the working Google Drive URL
+        url = "https://drive.usercontent.google.com/u/0/uc?id=1rbSTGKAE-MTxBYHd-51l2hMOQPT_7EPy&export=download"
         try:
             urllib.request.urlretrieve(url, model_path)
             print("Model downloaded successfully!")
