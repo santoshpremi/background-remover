@@ -49,6 +49,18 @@ async function processImage(file) {
       return;
   }
 
+  // Validate file type
+  if (!file.type.startsWith('image/')) {
+      showMessage('Invalid File Type', 'Please select an image file (JPEG, PNG, etc.)', 'error');
+      return;
+  }
+
+  // Validate file size (10MB limit)
+  if (file.size > 10 * 1024 * 1024) {
+      showMessage('File Too Large', 'Please select an image smaller than 10MB', 'error');
+      return;
+  }
+
   elements.progressContainer.style.display = 'block';
   const stop = simulateProgress();
 
@@ -56,8 +68,22 @@ async function processImage(file) {
   formData.append('file', file);
 
   try {
-      const response = await fetch('/', { method: 'POST', body: formData });
-      if (!response.ok) throw new Error('Server error');
+      // First check if server is healthy
+      const healthResponse = await fetch('/health');
+      if (!healthResponse.ok) {
+          throw new Error('Server is not responding properly');
+      }
+
+      const response = await fetch('/', { 
+          method: 'POST', 
+          body: formData 
+      });
+      
+      if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`Server error: ${response.status} - ${errorText}`);
+      }
+      
       const blob = await response.blob();
       originalResultBlob = blob; // Store the original blob
       const url = URL.createObjectURL(blob);
@@ -69,13 +95,22 @@ async function processImage(file) {
       // Apply initial background color preview
       setTimeout(() => updateResultPreview(), 100);
   } catch (error) {
-      showMessage('Error', 'Failed to upload image!', 'error');
+      console.error('Upload error:', error);
+      showMessage('Upload Failed', `Error: ${error.message}`, 'error');
   } finally {
       elements.progressContainer.style.display = 'none';
       stop();
   }
 }
 
+// Prevent form submission and handle file input manually
+elements.uploadForm.addEventListener('submit', function(e) {
+    e.preventDefault(); // Prevent default form submission
+    const file = elements.fileInput.files[0];
+    if (file) {
+        processImage(file);
+    }
+});
 
 // New infinite progress animation
 function simulateProgress() {

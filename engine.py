@@ -10,11 +10,15 @@ torch.set_num_threads(1)
 # Model path
 model_path = './u2netp.pth'
 
+# Device detection - use GPU if available, otherwise CPU
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+print(f"Using device: {device}")
+
 # Download model if it doesn't exist
 def download_model():
     if not os.path.exists(model_path):
         print("Downloading U2-Net model...")
-        url = "https://github.com/xuebinqin/U-2-Net/releases/download/v1.0/u2netp.pth"
+        url = "https://drive.usercontent.google.com/u/0/uc?id=1rbSTGKAE-MTxBYHd-51l2hMOQPT_7EPy&export=download"
         urllib.request.urlretrieve(url, model_path)
         print("Model downloaded successfully!")
 
@@ -22,9 +26,16 @@ def download_model():
 download_model()
 
 # Load the model
-model_pred = model.U2NETP(3, 1)
-model_pred.load_state_dict(torch.load(model_path, map_location="cpu", weights_only=True))
-model_pred.eval()
+try:
+    print("Loading U2-Net model...")
+    model_pred = model.U2NETP(3, 1)
+    model_pred.load_state_dict(torch.load(model_path, map_location=device, weights_only=True))
+    model_pred.to(device)  # Move model to appropriate device
+    model_pred.eval()
+    print("Model loaded successfully!")
+except Exception as e:
+    print(f"Error loading model: {e}")
+    raise RuntimeError(f"Failed to load model: {e}")
 
 
 def norm_pred(d: torch.Tensor) -> torch.Tensor:
@@ -71,14 +82,28 @@ def remove_bg(image: Image.Image, resize: bool = False) -> Image.Image:
     tensor_input = preprocess(image)
 
     with torch.inference_mode():
-        inputs_test = tensor_input.unsqueeze(0).float()
+        inputs_test = tensor_input.unsqueeze(0).float().to(device)  # Move input to device
 
         outputs = model_pred(inputs_test)
         d1 = outputs[0] if isinstance(outputs, (tuple, list)) else outputs
         pred = d1[:, 0, :, :]
-        predict = norm_pred(pred).squeeze().cpu().detach().numpy()
+        predict = norm_pred(pred).cpu().detach().numpy()  # Move to CPU before converting to numpy
 
-        matte = Image.fromarray((predict * 255).astype(np.uint8)).convert("L")
+        # Ensure the array is in the correct format for PIL
+        if predict.ndim != 2:
+            if predict.ndim == 3 and predict.shape[0] == 1:
+                predict = predict[0]  # Remove the first dimension
+            elif predict.ndim == 3 and predict.shape[2] == 1:
+                predict = predict[:, :, 0]  # Remove the last dimension
+        
+        # Ensure the data is in the correct range and type
+        predict = np.clip(predict, 0, 1)  # Clip to [0, 1] range
+        predict = predict.astype(np.float32)  # Ensure float32 type
+        
+        # Convert to uint8 for PIL
+        matte_array = (predict * 255).astype(np.uint8)
+        
+        matte = Image.fromarray(matte_array, mode='L')
         matte = matte.resize(image.size, resample=Image.BILINEAR)
 
         empty_img = Image.new("RGBA", image.size, 0)

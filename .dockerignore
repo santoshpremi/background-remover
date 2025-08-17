@@ -1,58 +1,72 @@
 # Include any files or directories that you don't want to be copied to your
-# container here (e.g., local build artifacts, temporary files, etc.).
-#
-# For more help, visit the .dockerignore file reference guide at
-# https://docs.docker.com/go/build-context-dockerignore/
+# Docker image. This will reduce the build context and potentially the image size.
 
-**/.DS_Store
-**/.vs
-**/.vscode
-**/.idea
+# Git and version control
+.git
+.gitignore
+.gitattributes
 
-# Python-specific
-**/__pycache__
-**/*.py[cod]
-**/.venv
-**/venv
-**/env
-**/Pipfile*
-**/poetry.lock
+# Python cache and virtual environments
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+env/
+.venv/
+.env
 
-# Build/test artifacts
-**/build
-**/dist
-**/*.egg-info
-**/.pytest_cache
-**/coverage.xml
-**/*.log
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
 
-# Docker/CI
-**/Dockerfile*
-**/docker-compose*
-**/compose.y*ml
-**/.dockerignore
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
 
-# Git
-**/.git
-**/.gitignore
-**/.gitmodules
-
-# Node.js (if your project has frontend files)
-**/node_modules
-**/npm-debug.log
-
-# Local secrets/configs
-**/.env
-**/secrets.dev.yaml
-**/config.local.yaml
-
-# Documentation (exclude unless needed in the image)
+# Documentation and README files
 README.md
-LICENSE
-CHANGELOG.md
+README.Docker.md
+*.md
 
-# Application-specific large files (adjust as needed)
-**/tests
-**/samples
-**/data/raw  # Example: exclude raw datasets
-**/*.ipynb
+# Docker files (not needed in the image)
+Dockerfile
+.dockerignore
+docker-compose.yml
+
+# Development and testing files
+tests/
+test_*.py
+*_test.py
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Large model files (if you want to download them at runtime instead)
+# ua2netp.pth
+
+# Node modules (if any)
+node_modules/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
